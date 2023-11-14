@@ -1,0 +1,73 @@
+default_platform(:ios)
+
+# matchの他のパラメータについてはURL参照　https://docs.fastlane.tools/actions/match/
+
+# development
+platform :ios do
+  desc "Development: Fetch certificates and provisioning profiles"
+  lane :development_fetch_cert_and_profile do
+    api_key = app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_filepath: ENV["ASC_KEY_FILEPATH"],
+      duration: 1200,
+      in_house: false
+    )
+    
+    match(
+      api_key: api_key,
+      type: "development",
+      app_identifier: ["jp.co.ncdc.revenuecat.sample"],
+      # 基本的には読み込み専門でtrue設定。Profile作成時のみfalseに変更して実行
+      readonly: false,
+      force_for_new_devices: true
+    )
+  end
+end
+
+platform :ios do
+  desc "Development Readonly: Fetch certificates and provisioning profiles"
+  lane :development_readonly_fetch_cert_and_profile do
+    match(
+      type: "development",
+      app_identifier: ["jp.co.ncdc.revenuecat.sample"],
+      readonly: true,
+      force_for_new_devices: true
+    )
+  end
+end
+
+# appstore
+platform :ios do
+  desc "AppStore: Fetch certificates and provisioning profiles"
+  lane :appstore_fetch_cert_and_profile do
+    api_key = app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_filepath: ENV["ASC_KEY_FILEPATH"],
+      duration: 1200,
+      in_house: false
+    )
+    
+    match(
+      api_key: api_key,
+      type: "appstore",
+      app_identifier: ["jp.co.ncdc.revenuecat.sample"],
+      # 基本的には読み込み専門でtrue設定。Profile作成時のみfalseに変更して実行
+      readonly: false,
+      force_for_new_devices: true
+    )
+  end
+end
+
+platform :ios do
+  desc "AppStore Readonly: Fetch certificates and provisioning profiles"
+  lane :appstore_readonly_fetch_cert_and_profile do
+    match(
+      type: "appstore",
+      app_identifier: ["jp.co.ncdc.revenuecat.sample"],
+      readonly: true,
+      force_for_new_devices: true
+    )
+  end
+end
