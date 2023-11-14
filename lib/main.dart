@@ -1,69 +1,52 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'src/app.dart';
+import 'src/constant.dart';
+import 'store_config.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+void main() async {
+  if (Platform.isIOS || Platform.isMacOS) {
+    StoreConfig(
+      store: Store.appStore,
+      apiKey: appleApiKey,
+    );
+  } else if (Platform.isAndroid) {
+    // Run the app passing --dart-define=AMAZON=true
+    const useAmazon = bool.fromEnvironment("amazon");
+    StoreConfig(
+      store: useAmazon ? Store.amazon : Store.playStore,
+      apiKey: useAmazon ? amazonApiKey : googleApiKey,
     );
   }
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await _configureSDK();
+
+  runApp(const MagicWeatherFlutter());
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+Future<void> _configureSDK() async {
+  // Enable debug logs before calling `configure`.
+  await Purchases.setLogLevel(LogLevel.debug);
 
-  final String title;
+  /*
+    - appUserID is nil, so an anonymous ID will be generated automatically by the Purchases SDK. Read more about Identifying Users here: https://docs.revenuecat.com/docs/user-ids
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+    - observerMode is false, so Purchases will automatically handle finishing transactions. Read more about Observer Mode here: https://docs.revenuecat.com/docs/observer-mode
+    */
+  PurchasesConfiguration configuration;
+  if (StoreConfig.isForAmazonAppstore()) {
+    configuration = AmazonConfiguration(StoreConfig.instance.apiKey)
+      ..appUserID = null
+      ..observerMode = false;
+  } else {
+    configuration = PurchasesConfiguration(StoreConfig.instance.apiKey)
+      ..appUserID = null
+      ..observerMode = false;
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
+  await Purchases.configure(configuration);
 }
