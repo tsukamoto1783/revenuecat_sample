@@ -39,8 +39,6 @@ class _UserScreenState extends State<UserScreen> {
       await Purchases.logIn(newAppUserID);
       appData.appUserID = await Purchases.appUserID;
     } on PlatformException catch (e) {
-      if (!mounted) return;
-
       await showDialog(
           context: context,
           builder: (BuildContext context) => ShowDialogToDismiss(
@@ -66,10 +64,11 @@ class _UserScreenState extends State<UserScreen> {
     */
 
     try {
+      // appUserIDを指定しても、ログアウトすると匿名IDが勝手に指定されるので注意。
+      // appUserIDを指定してやりくりしたい際は、ログアウトしてはいけないとドキュメントには記載あり。
       await Purchases.logOut();
       appData.appUserID = await Purchases.appUserID;
     } on PlatformException catch (e) {
-      if (!mounted) return;
       await showDialog(
           context: context,
           builder: (BuildContext context) => ShowDialogToDismiss(
@@ -98,8 +97,6 @@ class _UserScreenState extends State<UserScreen> {
       await Purchases.restorePurchases();
       appData.appUserID = await Purchases.appUserID;
     } on PlatformException catch (e) {
-      if (!mounted) return;
-
       await showDialog(
           context: context,
           builder: (BuildContext context) => ShowDialogToDismiss(

@@ -1,5 +1,8 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 //TO DO: add the entitlement ID from the RevenueCat dashboard that is activated upon successful in-app purchase for the duration of the purchase.
-const entitlementID = 'purchase_test_id';
+// 存在しない値でも購入はエラーにはならない。offeringsの時にエラーハンドリング入れるのが良さそう
+const entitlementID = 'revenuecat_subscription_test';
 
 //TO DO: add your subscription terms and conditions
 const footerText =
@@ -8,7 +11,7 @@ const footerText =
 Read more about this here: https://www.revenuecat.com/blog/schedule-2-section-3-8-b""";
 
 //TO DO: add the Apple API key for your app from the RevenueCat dashboard: https://app.revenuecat.com
-const appleApiKey = 'appl_api_key';
+final appleApiKey = dotenv.env['APPLE_API_KEY']!;
 
 //TO DO: add the Google API key for your app from the RevenueCat dashboard: https://app.revenuecat.com
 const googleApiKey = 'googl_api_key';
