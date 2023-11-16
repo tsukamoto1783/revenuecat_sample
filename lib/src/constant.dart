@@ -2,7 +2,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 //TO DO: add the entitlement ID from the RevenueCat dashboard that is activated upon successful in-app purchase for the duration of the purchase.
 // 存在しない値でも購入はエラーにはならない。offeringsの時にエラーハンドリング入れるのが良さそう
-const entitlementID = 'revenuecat_subscription_test';
+const entitlementID = 'Pro_version';
 
 //TO DO: add your subscription terms and conditions
 const footerText =
