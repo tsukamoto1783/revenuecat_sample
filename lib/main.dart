@@ -51,6 +51,8 @@ Future<void> _configureSDK() async {
       ..observerMode = false;
   } else if (StoreConfig.isForAppleStore()) {
     configuration = PurchasesConfiguration(appleApiKey)..appUserID = null;
+  } else if (StoreConfig.isForGooglePlay()) {
+    configuration = PurchasesConfiguration(googleApiKey)..appUserID = null;
   } else {
     configuration = PurchasesConfiguration(StoreConfig.instance.apiKey)
       ..appUserID = null

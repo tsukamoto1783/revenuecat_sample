@@ -14,7 +14,7 @@ Read more about this here: https://www.revenuecat.com/blog/schedule-2-section-3-
 final appleApiKey = dotenv.env['APPLE_API_KEY']!;
 
 //TO DO: add the Google API key for your app from the RevenueCat dashboard: https://app.revenuecat.com
-const googleApiKey = 'googl_api_key';
+final googleApiKey = dotenv.env['GOOGLE_API_KEY']!;
 
 //TO DO: add the Amazon API key for your app from the RevenueCat dashboard: https://app.revenuecat.com
 const amazonApiKey = 'amazon_api_key';
