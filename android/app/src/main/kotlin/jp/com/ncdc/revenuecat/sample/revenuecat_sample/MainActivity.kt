@@ -1,4 +1,4 @@
-package jp.com.ncdc.revenuecat.sample.revenuecat_sample
+package jp.co.ncdc.revenuecat.sample
 
 import io.flutter.embedding.android.FlutterActivity
 
