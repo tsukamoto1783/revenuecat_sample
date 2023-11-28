@@ -20,5 +20,10 @@ SANDBOX環境で購入可能。
 履歴がRevenueCatのダッシュボードに反映される。
 
 ## android
-アプリのテスト申請が通らないので、Offerings情報などが読み込めずにエラーになる。
-動作確認ができていない状況。
+Google Play Consoleでクローズドテストの申請通らないとAPIが許可されずエラーとなること注意。
+
+## .env
+RevenueCatのAPIは、.env.templateを.envにリネームして、APIキーを設定する。
+
+## 参考
+https://zenn.dev/tsukatsuka1783/scraps/34236ac4b98006
